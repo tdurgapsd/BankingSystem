@@ -2,6 +2,7 @@ package com.durga.bankingsys.service;
 
 import com.durga.bankingsys.entity.Account;
 import com.durga.bankingsys.repository.AccountRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,5 +47,25 @@ public class AccountService {
         Account a = get(accNo);
         repo.delete(a);
         return "Account Deleted";
+    }
+
+    @Transactional
+    public String transfer(String senderAccNo, String receiverAccNo, Double amount) {
+        Account sender = get(senderAccNo);
+        Account receiver = get(receiverAccNo);
+
+        if(sender.getBalance() < amount){
+            throw new RuntimeException("Not enough balance");
+        }
+        //subtracting from sender
+        sender.setBalance(sender.getBalance()-amount);
+
+        //adding amount to receiver
+        receiver.setBalance(receiver.getBalance()+amount);
+
+        repo.save(sender);
+        repo.save(receiver);
+        return "Transaction Successfull";
+
     }
 }

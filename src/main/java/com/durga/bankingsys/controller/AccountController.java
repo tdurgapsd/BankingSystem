@@ -41,4 +41,10 @@ public class AccountController {
     public String delete(@PathVariable String accNo){
         return service.delete(accNo);
     }
+    @PostMapping("/transfer/{sender}/{receiver}/{amount}")
+    public String transfer(@PathVariable String sender, @PathVariable String receiver, @PathVariable Double amount){
+        return service.transfer(sender , receiver, amount);
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package com.durga.bankingsys.controller;
 
 import com.durga.bankingsys.entity.Account;
+import com.durga.bankingsys.entity.Transaction;
 import com.durga.bankingsys.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -42,8 +43,13 @@ public class AccountController {
         return service.delete(accNo);
     }
     @PostMapping("/transfer/{sender}/{receiver}/{amount}")
-    public String transfer(@PathVariable String sender, @PathVariable String receiver, @PathVariable Double amount){
-        return service.transfer(sender , receiver, amount);
+    public void transfer(@PathVariable String sender, @PathVariable String receiver, @PathVariable Double amount){
+         service.transfer(sender , receiver, amount);
+    }
+
+    @GetMapping("/history/{accNo}")
+    public List<Transaction> history(@PathVariable String accNo){
+        return service.history(accNo);
     }
 
 
